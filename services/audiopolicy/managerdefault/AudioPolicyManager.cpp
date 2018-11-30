@@ -5660,6 +5660,17 @@ status_t AudioPolicyManager::checkAndSetVolume(audio_stream_type_t stream,
             int volumeIndex = mVolumeCurves->getVolumeIndex(AUDIO_STREAM_MUSIC, device);
             int volumeMaxIndex = mVolumeCurves->getVolumeIndexMax(AUDIO_STREAM_MUSIC);
             float mediaVolume = (float) volumeIndex / (float) volumeMaxIndex;
+
+            if (volumeMaxIndex == 1) {
+                char defaultMediaVolume[PROPERTY_VALUE_MAX];
+                char volumeStep[PROPERTY_VALUE_MAX];
+                if (property_get("ro.config.media_vol_default", defaultMediaVolume, NULL)
+                        && property_get("ro.config.media_vol_steps", volumeStep, NULL)) {
+                   mediaVolume = ((float)atoi(defaultMediaVolume)) / ((float)atoi(volumeStep));
+                } else {
+                   mediaVolume = 0.25f;
+                }
+            }
             outputDesc->updateGain(stream, device, mediaVolume);
         }
     }
