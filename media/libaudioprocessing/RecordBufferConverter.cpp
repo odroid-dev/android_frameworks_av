@@ -157,6 +157,9 @@ size_t RecordBufferConverter::convert(void *dst,
 
          memcpy_by_audio_format(dst, mDstFormat, convert, AUDIO_FORMAT_PCM_16_BIT,
                  frames * mDstChannelCount);
+
+         if (convert)
+             free(convert);
 #else //original code
          // reallocate buffer if needed
          if (mBufFrameSize != 0 && mBufFrames < frames) {
