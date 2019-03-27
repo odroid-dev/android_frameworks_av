@@ -151,25 +151,26 @@ size_t RecordBufferConverter::convert(void *dst,
                      convert[i * channels + j] = int16_t(s);
                  }
              }
+         }
 
-             memcpy_by_audio_format(dst, mDstFormat, convert, AUDIO_FORMAT_PCM_16_BIT,
-                     frames * mDstChannelCount);
+         memcpy_by_audio_format(dst, mDstFormat, convert, AUDIO_FORMAT_PCM_16_BIT,
+                 frames * mDstChannelCount);
 
-             if (convert)
-                 free(convert);
-        } else {//original code
-             // reallocate buffer if needed
-             if (mBufFrameSize != 0 && mBufFrames < frames) {
-                 free(mBuf);
-                 mBufFrames = frames;
-                 (void)posix_memalign(&mBuf, 32, mBufFrames * mBufFrameSize);
-             }
-            // resampler accumulates, but we only have one source track
-            memset(mBuf, 0, frames * mBufFrameSize);
-            frames = mResampler->resample((int32_t*)mBuf, frames, provider);
-            // format convert to destination buffer
-            convertResampler(dst, mBuf, frames);
-        }
+         if (convert)
+             free(convert);
+#else //original code
+         // reallocate buffer if needed
+         if (mBufFrameSize != 0 && mBufFrames < frames) {
+             free(mBuf);
+             mBufFrames = frames;
+             (void)posix_memalign(&mBuf, 32, mBufFrames * mBufFrameSize);
+         }
+        // resampler accumulates, but we only have one source track
+        memset(mBuf, 0, frames * mBufFrameSize);
+        frames = mResampler->resample((int32_t*)mBuf, frames, provider);
+        // format convert to destination buffer
+        convertResampler(dst, mBuf, frames);
+#endif
     }
     return frames;
 }
