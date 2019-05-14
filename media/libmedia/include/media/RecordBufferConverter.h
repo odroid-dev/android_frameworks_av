@@ -85,6 +85,8 @@ private:
     // format conversion when using resampler; modifies src in-place
     void convertResampler(void *dst, /*not-a-const*/ void *src, size_t frames);
 
+    bool useInt16Resampler();
+
     // user provided information
     audio_channel_mask_t mSrcChannelMask;
     audio_format_t       mSrcFormat;
