@@ -5665,8 +5665,8 @@ status_t AudioPolicyManager::checkAndSetVolume(audio_stream_type_t stream,
     if (mIsPlatformTelevision) {
         bool speakerGainApplied = false;
         bool bootVideoRunning = property_get_int32("service.bootvideo.exit", 0) == 1;
-        if(((curDevice == AUDIO_DEVICE_OUT_HDMI && property_get_bool("ro.vendor.platform.is.stb", false))
-               || curDevice == AUDIO_DEVICE_OUT_SPEAKER) &&
+        if(((device == AUDIO_DEVICE_OUT_HDMI && property_get_bool("ro.vendor.platform.is.stb", false))
+               || device == AUDIO_DEVICE_OUT_SPEAKER) &&
                        (outputDesc->isStreamActive(stream) || bootVideoRunning)) {
             //ignoring the "index" passed as argument and always use MUSIC stream index
             //for all stream types works on TV because all stream types are aliases of MUSIC.
@@ -5674,23 +5674,23 @@ status_t AudioPolicyManager::checkAndSetVolume(audio_stream_type_t stream,
             int volumeMaxIndex = mVolumeCurves->getVolumeIndexMax(AUDIO_STREAM_MUSIC);
 
             float musicVolumeDb = mVolumeCurves->volIndexToDb(AUDIO_STREAM_MUSIC,
-                                        Volume::getDeviceCategory(curDevice), volumeIndex);
+                                        Volume::getDeviceCategory(device), volumeIndex);
             float maxMusicVolumeDb = mVolumeCurves->volIndexToDb(AUDIO_STREAM_MUSIC,
-                                        Volume::getDeviceCategory(curDevice), volumeMaxIndex);
+                                        Volume::getDeviceCategory(device), volumeMaxIndex);
             float minMusicVolumeDb = mVolumeCurves->volIndexToDb(AUDIO_STREAM_MUSIC,
-                                        Volume::getDeviceCategory(curDevice),
+                                        Volume::getDeviceCategory(device),
                                         mVolumeCurves->getVolumeIndexMin(AUDIO_STREAM_MUSIC));
             if (bootVideoRunning) {
                 maxMusicVolumeDb = 0.0f;
                 minMusicVolumeDb = -10000.0f;
                 musicVolumeDb = -1837.0f;
             }
-            speakerGainApplied = outputDesc->updateGain(curDevice,
+            speakerGainApplied = outputDesc->updateGain(device,
                                         musicVolumeDb, minMusicVolumeDb, maxMusicVolumeDb);
         }
-        if (curDevice == AUDIO_DEVICE_OUT_HDMI_ARC ||
-                curDevice == AUDIO_DEVICE_OUT_WIRED_HEADPHONE ||
-            (speakerGainApplied && (curDevice & AUDIO_DEVICE_OUT_SPEAKER) != 0)) {
+        if (device == AUDIO_DEVICE_OUT_HDMI_ARC ||
+                device == AUDIO_DEVICE_OUT_WIRED_HEADPHONE ||
+            (speakerGainApplied && (device & AUDIO_DEVICE_OUT_SPEAKER) != 0)) {
             volumeDb = 0.0f;
         }
     }
