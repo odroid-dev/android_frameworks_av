@@ -119,7 +119,7 @@ size_t RecordBufferConverter::convert(void *dst,
              free(mBuf);
              mBufFrames = frames;
              (void)posix_memalign(&mBuf, 32, mBufFrames * mBufFrameSize);
-            ALOGI("%s,posix_memalign,mBufFrames = %d", __FUNCTION__, mBufFrames);
+            ALOGI("%s,posix_memalign,mBufFrames = %zu", __FUNCTION__, mBufFrames);
          }
          // resampler accumulates, but we only have one source track
          memset(mBuf, 0, frames * mBufFrameSize);
