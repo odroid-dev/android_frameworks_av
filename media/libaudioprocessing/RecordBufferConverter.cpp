@@ -29,7 +29,7 @@
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
 #endif
 
-#define USE_INT16_RESAMPLER 1
+//#define USE_INT16_RESAMPLER 1
 
 template <typename T>
 static inline T max(const T& a, const T& b)
