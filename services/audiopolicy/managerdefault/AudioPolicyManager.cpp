@@ -6002,7 +6002,7 @@ void AudioPolicyManager::cleanUpForDevice(const sp<DeviceDescriptor>& deviceDesc
 void AudioPolicyManager::filterSurroundFormats(FormatVector *formatsPtr) {
     FormatVector &formats = *formatsPtr;
     // TODO Set this based on Config properties.
-    const bool alwaysForceAC3 = false;
+    const bool alwaysForceAC3 = true;
 
     audio_policy_forced_cfg_t forceUse = mEngine->getForceUse(
             AUDIO_POLICY_FORCE_FOR_ENCODED_SURROUND);
