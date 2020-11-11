@@ -353,7 +353,7 @@ void RecordBufferConverter::convertResampler(
 }
 
 bool RecordBufferConverter::useInt16Resampler() {
-    return (property_get_int32("persist.sys.useint16resampler", 1) == 1) &&
+    return (property_get_int32("persist.sys.useint16resampler", 0) == 1) &&
             (mSrcSampleRate <= 48000);
 }
 
