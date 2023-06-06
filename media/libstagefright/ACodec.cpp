@@ -2009,6 +2009,7 @@ status_t ACodec::configureCodec(
         int32_t rotationDegrees;
         if (msg->findInt32("rotation-degrees", &rotationDegrees)) {
             mRotationDegrees = rotationDegrees;
+            msg->setInt32("vendor.rotation-angle.angle", mRotationDegrees);
         } else {
             mRotationDegrees = 0;
         }
@@ -2240,6 +2241,10 @@ status_t ACodec::configureCodec(
     /*add by amlogic for audio extend format support*/
     if ( AVUtils::get()->isAudioExtendFormat(mime))
         err = AVUtils::get()->setAudioExtendParameter(mime ,mOMXNode, msg);
+
+    /*add by amlogic for video/other convert format support*/
+    if ( AVUtils::get()->isExtendFormat(mime))
+        err = AVUtils::get()->handleExtendParameter(mime ,mOMXNode, msg);
 
     if (err != OK) {
         return err;
